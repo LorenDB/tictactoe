@@ -115,9 +115,9 @@ void drawBoard(Board &board)
 	std::cout << " * * * * * * * * * * * * * \n";
 	std::cout << " *       *       *       * \n";
 	std::cout << " *   " << getXO(board.m_board[2][0]);
-	std::cout << "   *  " << getXO(board.m_board[2][1]);
-	std::cout << "    *  " << getXO(board.m_board[2][2]);
-	std::cout << "    *\n";
+	std::cout << "   *   " << getXO(board.m_board[2][1]);
+	std::cout << "   *   " << getXO(board.m_board[2][2]);
+	std::cout << "   *\n";
 	std::cout << " *       *       *       * \n";
 	std::cout << " * * * * * * * * * * * * * \n";
 }
@@ -414,6 +414,7 @@ void aiMove(Board &board, int pieceValue, int move)
 				}
 			}
 		}
+
 		for (int i = 0; i < 3; ++i)
 		{
 			int j;
@@ -440,57 +441,54 @@ void aiMove(Board &board, int pieceValue, int move)
 				}
 			}
 		}
-		{ // this block and the next block are designed to keep variables separate
-			int i, j;
-			for (i = 0, j = 0; i < 3, j < 3; ++i, ++j)
+
+		for (int i = 0, j = 0; i < 3, j < 3; ++i, ++j)
+		{
+			tmp[i] = board.m_board[i][j];
+		}
+		if (tmp[0] + tmp[1] + tmp[2] == pieceValue)
+		{
+			if (tmp[0] == pieceValue)
 			{
-				tmp[i] = board.m_board[i][j];
+				board.m_board[2][2] = pieceValue;
+				return;
 			}
-			if (tmp[0] + tmp[1] + tmp[2] == pieceValue)
+			else if (tmp[2] == pieceValue)
 			{
-				if (tmp[0] == pieceValue)
-				{
-					board.m_board[2][2] = pieceValue;
-					return;
-				}
-				else if (tmp[2] == pieceValue)
-				{
-					board.m_board[0][0] = pieceValue;
-					return;
-				}
-				else
-				{
-					board.m_board[0][0] = pieceValue; // placeholder code
-					return;
-				}
+				board.m_board[0][0] = pieceValue;
+				return;
+			}
+			else
+			{
+				board.m_board[0][0] = pieceValue; // placeholder code
+				return;
 			}
 		}
+
+		for (int i = 0, j = 2; i < 3, j >= 0; ++i, --j)
 		{
-			int i, j;
-			for (i = 0, j = 2; i < 3, j >= 0; ++i, --j)
+			tmp[i] = board.m_board[i][j];
+		}
+		if (tmp[0] + tmp[1] + tmp[2] == pieceValue)
+		{
+			if (tmp[0] == pieceValue)
 			{
-				tmp[i] = board.m_board[i][j];
+				board.m_board[2][0] = pieceValue;
+				return;
 			}
-			if (tmp[0] + tmp[1] + tmp[2] == pieceValue)
+			else if (tmp[2] == pieceValue)
 			{
-				if (tmp[0] == pieceValue)
-				{
-					board.m_board[2][0] = pieceValue;
-					return;
-				}
-				else if (tmp[2] == pieceValue)
-				{
-					board.m_board[0][2] = pieceValue;
-					return;
-				}
-				else
-				{
-					board.m_board[0][2] = pieceValue; // placeholder code
-					return;
-				}
+				board.m_board[0][2] = pieceValue;
+				return;
+			}
+			else
+			{
+				board.m_board[0][2] = pieceValue; // placeholder code
+				return;
 			}
 		}
 	}
+
 
 	// this will give us a move if nothing else has
     while (true)
